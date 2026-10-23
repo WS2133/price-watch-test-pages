@@ -10,3 +10,4 @@ Only `changing.html` may change during a test. The other pages are fixed control
 - `blocked.html`: a synthetic human-verification page with no product data.
 - `changing.html`: starts at $50.00 AUD, sold out; used to test price and stock changes.
 - `list.html`: 200 synthetic listings, $1.01 to $3.00 AUD, alternating in and out of stock.
+- `hotel-stay.html`: shows the stay and party from its query and one synthetic AUD 1,234.56 stay total; `case=excludes` shows AUD 1,000.00 before 17% GST and a USD 30.00 environmental tax. Reserve is plain text.

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Price watch test page: hotel stay</title>
+  <style>
+    body { max-width: 48rem; margin: 3rem auto; padding: 0 1rem; font: 1rem/1.6 system-ui, sans-serif; color: #172a35; background: #f5f8fa; }
+    article { margin-top: 2rem; padding: 1.5rem; border: 1px solid #b8c8d0; border-radius: .5rem; background: white; }
+  </style>
+</head>
+<body>
+  <h1>Hotel stay test</h1>
+  <p>This page tests Will's Price watch. The room and amounts are synthetic. Nothing is for sale.</p>
+  <p id="stay"></p>
+  <article aria-label="One synthetic hotel rate"><p id="rate"></p></article>
+  <script>
+    const query = new URLSearchParams(location.search);
+    function date(name, fallback) {
+      const value = query.get(name) || fallback;
+      const parsed = new Date(value + 'T00:00:00Z');
+      const valid = /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+      return new Date((valid ? value : fallback) + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+    }
+    function count(name, fallback) {
+      const value = query.get(name);
+      return value !== null && /^\d{1,2}$/.test(value) ? Number(value) : fallback;
+    }
+    const adults = count('adults', 3), children = count('children', 0), rooms = count('rooms', 1);
+    document.getElementById('stay').textContent = date('checkIn', '2027-06-01') + ' – ' + date('checkOut', '2027-06-06') +
+      ' · ' + adults + (adults === 1 ? ' adult' : ' adults') + ' · ' + children + (children === 1 ? ' child' : ' children') +
+      ' · ' + rooms + (rooms === 1 ? ' room' : ' rooms');
+    const amount = query.get('case') === 'excludes'
+      ? 'AU$1,000.00 for the stay, before 17% GST and a USD 30.00 environmental tax'
+      : 'AU$1,234.56 total for the stay, including taxes';
+    document.getElementById('rate').textContent = 'Test Lagoon Villa · Half board · Free cancellation · Pay at the hotel · ' + amount + ' · Reserve';
+  </script>
+</body>
+</html>
